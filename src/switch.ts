@@ -1,4 +1,4 @@
-import {on} from './even'
+import { on } from './even'
 
 export default {
     outerHTML: function (oldEl, newEl) {
@@ -26,14 +26,11 @@ export default {
                 oldEl.attributes.setNamedItem(attrs[i].cloneNode())
             }
         }
-
-        this.onSwitch()
     },
 
     // Equivalent to outerHTML(), but doesn't require switchElementsAlt() for <head> and <body>
     replaceNode: function (oldEl, newEl) {
-        oldEl.parentNode.replaceChild(newEl, oldEl)
-        this.onSwitch()
+        oldEl.parentNode.replaceChild(newEl, oldEl);
     },
 
     sideBySide: function (oldEl, newEl, options, switchOptions) {
@@ -67,10 +64,8 @@ export default {
                 elsToAdd = null // free memory
                 elsToRemove = null // free memory
 
-                // this is to trigger some repaint (example: picturefill)
-                this.onSwitch()
             }
-        }.bind(this)
+        }
 
         switchOptions = switchOptions || {}
 

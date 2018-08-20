@@ -2,11 +2,14 @@ export interface IRequestParams {
     name: string,
     value: string
 }
+export enum Switches {
+    outerHTML = 'outerHTML', innerHTML = 'innerHTML', replaceNode = 'outerHTML', sideBySide = 'outerHTML'
+}
 
 export interface Option {
     elements: string,
     selectors: Array<string>,
-    switches: Object,
+    switches: Switches,
     switchesOptions: Object,
     debug: Boolean,
     timeout: Number,
@@ -27,7 +30,7 @@ export interface Option {
 const defaultConfig: Option = {
     elements: "a[href], form[action]",
     selectors: ["title"],
-    switches: {},
+    switches: Switches.outerHTML,
     switchesOptions: {},
     debug: false,
     timeout: 0,
@@ -40,7 +43,7 @@ export function parseOptions(options: Option): Option {
     options = Object.assign(defaultConfig, options)
 
     options.history = (typeof options.history === "undefined") ? true : options.history
-    // options.analytics = (typeof options.analytics === "function" || options.analytics === false) ? options.analytics : defaultAnalytics
+    options.analytics = (typeof options.analytics === "function" || options.analytics === false) ? options.analytics : defaultAnalytics
     options.scrollTo = (typeof options.scrollTo === "undefined") ? 0 : options.scrollTo
     options.scrollRestoration = (typeof options.scrollRestoration !== "undefined") ? options.scrollRestoration : true
     options.cacheBust = (typeof options.cacheBust === "undefined") ? true : options.cacheBust

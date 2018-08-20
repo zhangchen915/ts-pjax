@@ -1,8 +1,9 @@
 import { Option, parseOptions } from './config';
 import { trigger } from './even';
+import switches from './switch';
 import { request, doRequest } from './fetchPage';
 import { replaceState, loadContent } from './handleRes'
-import { defaultSwitches, shouldAbort } from './util'
+import { defaultSwitches, shouldAbort } from './util';
 
 export default class Pjax {
     options: Option
@@ -34,6 +35,8 @@ export default class Pjax {
             }
         })
     }
+
+    static switches = switches;
 
     loadUrl(url: string) {
         if (this.request) this.request.abort();
@@ -73,7 +76,6 @@ export default class Pjax {
     }
 
     linkAction(el, event: KeyboardEvent) {
-        console.log(arguments)
         if (shouldAbort(el, event)) return;
         event.preventDefault();
 
@@ -87,9 +89,7 @@ export default class Pjax {
         }
     }
 
-    switches(fromEl: ParentNode, toEl: ParentNode) {
-        var switchesQueue: Array<Function> = []
-
+    private switches(fromEl: ParentNode, toEl: ParentNode) {
         this.options.selectors.forEach(selector => {
             const newEls = Array.from(fromEl.querySelectorAll(selector));
             const oldEls = Array.from(toEl.querySelectorAll(selector));
