@@ -1,6 +1,7 @@
 import { Option, parseOptions } from './config';
 import { trigger } from './even';
 import switches from './switch';
+import { executeScripts } from './eval';
 import { request, doRequest } from './fetchPage';
 import { replaceState, loadContent } from './handleRes'
 import { defaultSwitches, shouldAbort } from './util';
@@ -111,6 +112,10 @@ export default class Pjax {
     }
 
     afterAllSwitches() {
+        this.options.selectors.forEach(selector => {
+            Array.from(document.querySelectorAll(selector)).forEach(el => executeScripts(el))
+        });
+
         trigger(document, "pjax:complete pjax:success");
 
         this.options.analytics();
