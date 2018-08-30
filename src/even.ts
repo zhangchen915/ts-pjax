@@ -8,7 +8,7 @@ export function on(els: NodeList, events: string, listener, useCapture?) {
 
 export function trigger(node: Node, events: string, opts?) {
     events.split(" ").forEach(eventName => {
-        var event = new Event(eventName);
+        const event = new Event(eventName);
         event.initEvent(eventName, true, true)
 
         if (opts) {

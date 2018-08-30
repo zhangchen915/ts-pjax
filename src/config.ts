@@ -39,6 +39,13 @@ const defaultConfig: Option = {
     }
 }
 
+function defaultAnalytics() {
+    // @ts-ignore
+    if (window._gaq) _gaq.push(["_trackPageview"]);
+    // @ts-ignore
+    if (window.ga) ga("send", "pageview", { page: location.pathname, title: document.title });
+}
+
 export function parseOptions(options: Option): Option {
     options = Object.assign(defaultConfig, options)
 

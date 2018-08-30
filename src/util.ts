@@ -41,10 +41,3 @@ export function shouldAbort(el: HTMLAnchorElement, event: KeyboardEvent): Boolea
 
   return false;
 }
-
-function defaultAnalytics() {
-  // @ts-ignore
-  if (window._gaq) _gaq.push(["_trackPageview"]);
-  // @ts-ignore
-  if (window.ga) ga("send", "pageview", { page: location.pathname, title: document.title });
-}

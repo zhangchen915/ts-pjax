@@ -1,4 +1,4 @@
-export function executeScripts(el) {
+export function executeScripts(el): void {
     if (el.tagName.toLowerCase() === "script") evalScript(el);
 
     Array.from(document.querySelectorAll('script')).forEach(script => {
