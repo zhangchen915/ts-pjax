@@ -1,8 +1,8 @@
 import { updateQueryString } from './util';
 
-export function request(url: string, option) {
+export const request = (url: string) => {
     const request: XMLHttpRequest = new XMLHttpRequest();
-    const { timeout, requestOptions, cacheBust } = option;
+    const { timeout, requestOptions, cacheBust } = this.options;
 
     if (cacheBust) url = updateQueryString(url, "t", Date.now())
 
@@ -10,9 +10,9 @@ export function request(url: string, option) {
     request.timeout = timeout;
     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     request.setRequestHeader("X-PJAX", "true");
-    // if (requestPayload && requestMethod === "POST") {
-    //     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
-    // }
+    if (requestOptions.requestPayload && requestOptions.requestMethod === "POST") {
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
+    }
 
     return request;
 }

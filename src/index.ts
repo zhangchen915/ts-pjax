@@ -4,7 +4,7 @@ import switches from './switch';
 import { executeScripts } from './eval';
 import { request, doRequest } from './fetchPage';
 import { replaceState, loadContent } from './handleRes'
-import { defaultSwitches, shouldAbort } from './util';
+import { defaultSwitches, shouldAbort, newUid } from './util';
 
 export default class Pjax {
     options: Option
@@ -15,7 +15,7 @@ export default class Pjax {
         this.options = parseOptions(options);
         this.parseDOM(document);
 
-        window.addEventListener('popstate', (st) => {
+        window.addEventListener('popstate', st => {
             if (st.state) {
                 // var opt = Object.assign({}, this.options)
                 // opt.url = st.state.url
@@ -42,7 +42,7 @@ export default class Pjax {
     loadUrl(url: string) {
         if (this.request) this.request.abort();
 
-        this.request = request(url, this.options);
+        this.request = request(url);
         trigger(document, "pjax:send")
         doRequest(this.request).then(res => {
             replaceState(res);
@@ -112,6 +112,25 @@ export default class Pjax {
     }
 
     afterAllSwitches() {
+        if (this.options.history) {
+            this.lastUid = newUid();
+            if (!window.history.state) {
+                window.history.replaceState({
+                    url: window.location.href,
+                    title: document.title,
+                    uid: this.lastUid,
+                    scrollPos: [0, 0]
+                })
+            }
+
+            // window.history.pushState({
+            //     url: state.href,
+            //     title: state.options.title,
+            //     uid: this.maxUid,
+            //     scrollPos: [0, 0]
+            // }, '', state.href)
+        }
+
         this.options.selectors.forEach(selector => {
             Array.from(document.querySelectorAll(selector)).forEach(el => executeScripts(el))
         });
